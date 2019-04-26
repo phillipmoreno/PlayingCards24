@@ -10,7 +10,7 @@ public class PlayingCards24 extends Application {
 		@Override
 	    public void start(Stage primaryStage) throws Exception {
 
-	        Parent root = FXMLLoader.load(getClass().getResource(""));
+	        Parent root = FXMLLoader.load(getClass().getResource("PlayingCards24GUI.fxml"));
 
 	        Scene scene = new Scene(root);
 
