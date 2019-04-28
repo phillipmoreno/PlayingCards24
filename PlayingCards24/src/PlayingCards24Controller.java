@@ -1,3 +1,5 @@
+import javax.swing.JOptionPane;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -6,53 +8,58 @@ import javafx.scene.image.ImageView;
 
 public class PlayingCards24Controller {
 
-    @FXML
-    private ImageView cardInWindow1;
+	@FXML
+	private ImageView cardInWindow1;
 
-    @FXML
-    private ImageView cardInWindow2;
+	@FXML
+	private ImageView cardInWindow2;
 
-    @FXML
-    private ImageView cardInWindow3;
+	@FXML
+	private ImageView cardInWindow3;
 
-    @FXML
-    private ImageView cardInWindow4;
+	@FXML
+	private ImageView cardInWindow4;
 
-    @FXML
-    private TextField solutionTextField;
+	@FXML
+	private TextField solutionTextField;
 
-    @FXML
-    private TextField expressionTextField;
+	@FXML
+	private TextField expressionTextField;
 
-    @FXML
-    private Button refreshButton;
+	@FXML
+	private Button refreshButton;
 
-    @FXML
-    private Button verifyButton;
+	@FXML
+	private Button verifyButton;
 
-    @FXML
-    void aboutTheApplication(ActionEvent event) {
+	@FXML
+	void aboutTheApplication(ActionEvent event) {
+		JOptionPane.showMessageDialog(null,
+				"Card Game 24 \n\nVersion: 2019-4 (1.1.1)\nAuthor(s): Phillip Moreno\nIvan Williams\nMoumen Juma\nMurad Gazzi\n\nDescription: This game randomly generates four "
+						+ "\ndifferent cards that can be used in a math \nequation based on their value and total to 24.\n\n",
+				"About The Application", 1);
+	}
 
-    }
+	@FXML
+	void closeWindow(ActionEvent event) {
+		System.exit(0);
+	}
 
-    @FXML
-    void closeWindow(ActionEvent event) {
+	@FXML
+	void findSolution(ActionEvent event) {
 
-    }
+	}
 
-    @FXML
-    void findSolution(ActionEvent event) {
+	@FXML
+	void refresh(ActionEvent event) {
+		solutionTextField.setText("");
+		expressionTextField.setText("");
 
-    }
+	}
 
-    @FXML
-    void refresh(ActionEvent event) {
+	@FXML
+	void verify(ActionEvent event) {
 
-    }
-
-    @FXML
-    void verify(ActionEvent event) {
-
-    }
+	}
 
 }
