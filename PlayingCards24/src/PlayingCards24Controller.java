@@ -1,3 +1,5 @@
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import javax.swing.JOptionPane;
 
 import javafx.event.ActionEvent;
@@ -7,7 +9,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
 public class PlayingCards24Controller {
-
+	
+	ScriptEngineManager mgr = new ScriptEngineManager();
+    ScriptEngine engine = mgr.getEngineByName("JavaScript");
+    
 	@FXML
 	private ImageView cardInWindow1;
 
