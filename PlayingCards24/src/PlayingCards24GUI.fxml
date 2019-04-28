@@ -6,6 +6,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -29,10 +30,26 @@
 						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 					</rowConstraints>
 					<children>
-						<ImageView fx:id="cardInWindow1" fitHeight="204.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
-						<ImageView fx:id="cardInWindow2" fitHeight="204.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
-						<ImageView fx:id="cardInWindow3" fitHeight="204.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
-						<ImageView fx:id="cardInWindow4" fitHeight="204.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" />
+						<ImageView fx:id="cardInWindow1" fitHeight="204.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+							<image>
+								<Image url="@CardPictures/3_of_hearts.png" />
+							</image>
+						</ImageView>
+						<ImageView fx:id="cardInWindow2" fitHeight="204.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+							<image>
+								<Image url="@CardPictures/king_of_spades.png" />
+							</image>
+						</ImageView>
+						<ImageView fx:id="cardInWindow3" fitHeight="204.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+							<image>
+								<Image url="@CardPictures/4_of_diamonds.png" />
+							</image>
+						</ImageView>
+						<ImageView fx:id="cardInWindow4" fitHeight="204.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
+							<image>
+								<Image url="@CardPictures/2_of_spades.png" />
+							</image>
+						</ImageView>
 					</children>
 				</GridPane>
 				<Button layoutX="25.0" layoutY="50.0" mnemonicParsing="false" onAction="#findSolution" prefHeight="35.0" prefWidth="159.0" text="Find a Solution">
@@ -45,7 +62,7 @@
 						<Font name="System Bold" size="15.0" />
 					</font>
 				</Label>
-				<TextField fx:id="solutionTextField" layoutX="201.0" layoutY="50.0" prefHeight="35.0" prefWidth="230.0">
+				<TextField fx:id="solutionTextField" layoutX="201.0" layoutY="50.0" prefHeight="35.0" prefWidth="230.0" text="3 + 13 + (4 * 2)">
 					<font>
 						<Font name="System Bold" size="15.0" />
 					</font>
