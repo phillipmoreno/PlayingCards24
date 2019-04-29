@@ -1,3 +1,5 @@
+import java.util.Random;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.swing.JOptionPane;
@@ -11,6 +13,10 @@ public class PlayingCards24Controller {
 	
 	ScriptEngineManager mgr = new ScriptEngineManager();
     ScriptEngine engine = mgr.getEngineByName("JavaScript");
+    
+    static private String[] cardNumber = {"ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"}, cardType = {"clubs", "diamonds", "hearts", "spades"};
+    
+    Card[] cards = new Card[] {new Card("3", "hearts", 3), new Card("king", "clubs", 13), new Card("4", "diamonds", 4), new Card("2", "clubs", 2)};
     
 	@FXML
 	private ImageView cardInWindow1;
@@ -58,7 +64,32 @@ public class PlayingCards24Controller {
 	void refresh(ActionEvent event) {
 		solutionTextField.setText("");
 		expressionTextField.setText("");
-
+		
+		Random r = new Random();
+		
+		for(int i = 0; i < 4; i++) {
+			int n1 = r.nextInt(13), n2 = r.nextInt(4);
+			String number = cardNumber[n1], type = cardType[n2];
+			boolean abundant = false;
+			do {
+				abundant = false;
+				for(Card c: cards) {
+					if(number.equals(c.getNumber()) && type.equals(c.getType())){
+						abundant = true;
+						n1 = r.nextInt(13);
+						n2 = r.nextInt(4);
+						number = cardNumber[n1];
+						type = cardType[n2];
+					}
+				}
+			}while(abundant == true);
+			cards[i] = new Card(number, type, n1 + 1);
+		}
+		
+		cardInWindow1.setImage(cards[0].getImage());
+		cardInWindow2.setImage(cards[1].getImage());
+		cardInWindow3.setImage(cards[2].getImage());
+		cardInWindow4.setImage(cards[3].getImage());
 	}
 
 	@FXML
