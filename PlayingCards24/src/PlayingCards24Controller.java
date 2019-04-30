@@ -112,7 +112,7 @@ public class PlayingCards24Controller {
 					&& count(expressionInput, Integer.toString(cards[1].getValue())) == n[cards[1].getValue() - 1]
 					&& count(expressionInput, Integer.toString(cards[2].getValue())) == n[cards[2].getValue() - 1]
 					&& count(expressionInput, Integer.toString(cards[3].getValue())) == n[cards[3].getValue() - 1]
-					&& check(expressionInput, n) == false) {
+					&& check(expressionInput) == 4) {
 				if (engine.eval(expressionInput).equals(24)) {
 					System.out.println(engine.eval(expressionInput));
 					JOptionPane.showMessageDialog(null, "Success! The total is 24.", "Verify Math Equation", 1);
@@ -129,20 +129,24 @@ public class PlayingCards24Controller {
 
 	public int count(String str, String n) {
 		int count = 0;
-		Pattern p = Pattern.compile(n);
+		Pattern p = Pattern.compile("\\d+");
+		Matcher m = p.matcher(str);
+		while (m.find()) {
+			if (m.group().equals(n)) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int check(String str) {
+		int count = 0;
+		Pattern p = Pattern.compile("\\d+");
 		Matcher m = p.matcher(str);
 		while (m.find()) {
 			count++;
 		}
 		return count;
-	}
 
-	public boolean check(String str, int[] n) {
-		for (int i = 0; i < n.length; i++) {
-			if (str.contains(Integer.toString(i + 1)) && n[i] == 0) {
-				return true;
-			}
-		}
-		return false;
 	}
 }
