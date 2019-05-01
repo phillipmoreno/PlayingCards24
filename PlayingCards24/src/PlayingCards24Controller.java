@@ -65,7 +65,15 @@ public class PlayingCards24Controller {
 
 	@FXML
 	void findSolution(ActionEvent event) {
-
+		try {
+			time = System.nanoTime() - time;
+			Formatter f = new Formatter("log.txt");
+			f.format("%s %s", Long.toString(TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS)), " seconds used to obtain solution");
+			f.close();
+			time = System.nanoTime();
+		} catch (Exception e) {
+			System.out.println("Error");
+		}
 	}
 
 	@FXML
@@ -112,32 +120,42 @@ public class PlayingCards24Controller {
 
 	@FXML
 	void verify(ActionEvent event) throws ScriptException {
-		int[] n = new int[13];
-		for (int i = 0; i < 4; i++) {
-			n[cards[i].getValue() - 1]++;
-		}
-		String expressionInput = expressionTextField.getText();
-		if (expressionInput.contains(Integer.toString(cards[0].getValue()))
-				&& expressionInput.contains(Integer.toString(cards[1].getValue()))
-				&& expressionInput.contains(Integer.toString(cards[2].getValue()))
-				&& expressionInput.contains(Integer.toString(cards[3].getValue()))) {
-
-			if (count(expressionInput, Integer.toString(cards[0].getValue())) == n[cards[0].getValue() - 1]
-					&& count(expressionInput, Integer.toString(cards[1].getValue())) == n[cards[1].getValue() - 1]
-					&& count(expressionInput, Integer.toString(cards[2].getValue())) == n[cards[2].getValue() - 1]
-					&& count(expressionInput, Integer.toString(cards[3].getValue())) == n[cards[3].getValue() - 1]
-					&& check(expressionInput) == 4) {
-				if (engine.eval(expressionInput).equals(24)) {
-					System.out.println(engine.eval(expressionInput));
-					JOptionPane.showMessageDialog(null, "Success! The total is 24.", "Verify Math Equation", 1);
-				} else {
-					System.out.println(engine.eval(expressionInput));
-					JOptionPane.showMessageDialog(null, "Oops! The total is not 24, Please try again.",
-							"Verify Math Equation", 1);
-				}
+		try {
+			time = System.nanoTime() - time;
+			Formatter f = new Formatter("log.txt");
+			f.format("%s %s", Long.toString(TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS)), " seconds used to solve");
+			f.close();
+			time = System.nanoTime();
+			
+			int[] n = new int[13];
+			for (int i = 0; i < 4; i++) {
+				n[cards[i].getValue() - 1]++;
 			}
-		} else {
-			JOptionPane.showMessageDialog(null, "Incorrect input. Please try again.", "Verify Math Equation", 1);
+			String expressionInput = expressionTextField.getText();
+			if (expressionInput.contains(Integer.toString(cards[0].getValue()))
+					&& expressionInput.contains(Integer.toString(cards[1].getValue()))
+					&& expressionInput.contains(Integer.toString(cards[2].getValue()))
+					&& expressionInput.contains(Integer.toString(cards[3].getValue()))) {
+
+				if (count(expressionInput, Integer.toString(cards[0].getValue())) == n[cards[0].getValue() - 1]
+						&& count(expressionInput, Integer.toString(cards[1].getValue())) == n[cards[1].getValue() - 1]
+						&& count(expressionInput, Integer.toString(cards[2].getValue())) == n[cards[2].getValue() - 1]
+						&& count(expressionInput, Integer.toString(cards[3].getValue())) == n[cards[3].getValue() - 1]
+						&& check(expressionInput) == 4) {
+					if (engine.eval(expressionInput).equals(24)) {
+						System.out.println(engine.eval(expressionInput));
+						JOptionPane.showMessageDialog(null, "Success! The total is 24.", "Verify Math Equation", 1);
+					} else {
+						System.out.println(engine.eval(expressionInput));
+						JOptionPane.showMessageDialog(null, "Oops! The total is not 24, Please try again.",
+								"Verify Math Equation", 1);
+					}
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "Incorrect input. Please try again.", "Verify Math Equation", 1);
+			}
+		} catch (Exception e) {
+			System.out.println("Error");
 		}
 	}
 
