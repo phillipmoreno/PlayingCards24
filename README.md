@@ -15,6 +15,6 @@ This application randomly generates four different cards from a deck. The deck c
 
 ### Author(s)
 Phillip Moreno
-Ivan Williams
-Moumen Juma
-Murad Gazi
+ | Ivan Williams
+ | Moumen Juma
+ | Murad Gazi
