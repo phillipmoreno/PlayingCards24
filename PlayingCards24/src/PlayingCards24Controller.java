@@ -1,4 +1,6 @@
+import java.util.Formatter;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.script.ScriptEngine;
@@ -21,6 +23,8 @@ public class PlayingCards24Controller {
 
 	Card[] cards = new Card[] { new Card("3", "hearts", 3), new Card("king", "clubs", 13), new Card("4", "diamonds", 4),
 			new Card("2", "clubs", 2) };
+	
+	long time = System.nanoTime();
 
 	@FXML
 	private ImageView cardInWindow1;
@@ -66,34 +70,43 @@ public class PlayingCards24Controller {
 
 	@FXML
 	void refresh(ActionEvent event) {
-		solutionTextField.setText("");
-		expressionTextField.setText("");
-
-		Random r = new Random();
-
-		for (int i = 0; i < 4; i++) {
-			int n1 = r.nextInt(13), n2 = r.nextInt(4);
-			String number = cardNumber[n1], type = cardType[n2];
-			boolean abundant = false;
-			do {
-				abundant = false;
-				for (Card c : cards) {
-					if (number.equals(c.getNumber()) && type.equals(c.getType())) {
-						abundant = true;
-						n1 = r.nextInt(13);
-						n2 = r.nextInt(4);
-						number = cardNumber[n1];
-						type = cardType[n2];
+		try {
+			time = System.nanoTime() - time;
+			Formatter f = new Formatter("log.txt");
+			f.format("%s %s", Long.toString(TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS)), " seconds used");
+			time = System.nanoTime();
+			
+			solutionTextField.setText("");
+			expressionTextField.setText("");
+			
+			Random r = new Random();
+			
+			for (int i = 0; i < 4; i++) {
+				int n1 = r.nextInt(13), n2 = r.nextInt(4);
+				String number = cardNumber[n1], type = cardType[n2];
+				boolean abundant = false;
+				do {
+					abundant = false;
+					for (Card c : cards) {
+						if (number.equals(c.getNumber()) && type.equals(c.getType())) {
+							abundant = true;
+							n1 = r.nextInt(13);
+							n2 = r.nextInt(4);
+							number = cardNumber[n1];
+							type = cardType[n2];
+						}
 					}
-				}
-			} while (abundant == true);
-			cards[i] = new Card(number, type, n1 + 1);
+				} while (abundant == true);
+				cards[i] = new Card(number, type, n1 + 1);
+			}
+			
+			cardInWindow1.setImage(cards[0].getImage());
+			cardInWindow2.setImage(cards[1].getImage());
+			cardInWindow3.setImage(cards[2].getImage());
+			cardInWindow4.setImage(cards[3].getImage());
+		} catch (Exception e) {
+			System.out.println("Error");
 		}
-
-		cardInWindow1.setImage(cards[0].getImage());
-		cardInWindow2.setImage(cards[1].getImage());
-		cardInWindow3.setImage(cards[2].getImage());
-		cardInWindow4.setImage(cards[3].getImage());
 	}
 
 	@FXML
