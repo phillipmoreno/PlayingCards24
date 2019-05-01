@@ -74,6 +74,7 @@ public class PlayingCards24Controller {
 			time = System.nanoTime() - time;
 			Formatter f = new Formatter("log.txt");
 			f.format("%s %s", Long.toString(TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS)), " seconds used");
+			f.close();
 			time = System.nanoTime();
 			
 			solutionTextField.setText("");
