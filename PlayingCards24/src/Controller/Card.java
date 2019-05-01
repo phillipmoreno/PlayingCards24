@@ -1,3 +1,4 @@
+package Controller;
 
 import javafx.scene.image.Image;
 
