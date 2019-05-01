@@ -71,7 +71,6 @@ public class PlayingCards24Controller {
 			f.format("%s %s", Long.toString(TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS)), " seconds used to obtain solution");
 			f.close();
 			time = System.nanoTime();
-			
 		} catch (Exception e) {
 			System.out.println("Error");
 		}
