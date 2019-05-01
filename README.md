@@ -13,7 +13,7 @@ This application randomly generates four different cards from a deck. The deck c
 8. Click "Refresh" to generate four different cards so you can play again. 
 9. Have fun! 
 
-###Author(s)
+### Author(s)
 Phillip Moreno
 Ivan Williams
 Moumen Juma
