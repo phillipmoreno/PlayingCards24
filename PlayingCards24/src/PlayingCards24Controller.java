@@ -77,9 +77,9 @@ public class PlayingCards24Controller {
 		try {
 			time = System.nanoTime() - time;
 			Formatter f = new Formatter("log.txt");
-			f.format("%s", "Finding solution");
+			f.format("%s", "Finding solution\n");
 			f.format("%s %s", Long.toString(TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS)),
-					" seconds used to obtain solution");
+					"seconds used to obtain solution\n");
 			time = System.nanoTime();
 			
 			int card1 = cards[0].getValue();
@@ -95,13 +95,13 @@ public class PlayingCards24Controller {
 			if (isCorrect == true) {
 				// Returns solution if the verify function confirms you are correct
 				solutionTextField.setText(expressionTextField.getText());
-				f.format("%s", "Solution found");
+				f.format("%s", "Solution found\n");
 			}
 			else if (isCorrect == false) {
 				// Returns "No Solution" if verify function confirms there is an incorrect input
 				// or the total does not equal to 24
 				solutionTextField.setText("No Solution for: [" + c1 + ", " + c2 + ", " + c3 + ", " + c4 + "]");
-				f.format("%s", "No solution found");
+				f.format("%s", "No solution found\n");
 			}
 			
 			
@@ -117,8 +117,8 @@ public class PlayingCards24Controller {
 		try {
 			time = System.nanoTime() - time;
 			Formatter f = new Formatter("log.txt");
-			f.format("%s", "Refreshing cards");
-			f.format("%s %s", Long.toString(TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS)), " seconds used");
+			f.format("%s", "Refreshing cards\n");
+			f.format("%s %s", Long.toString(TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS)), "seconds used\n");
 			f.close();
 			time = System.nanoTime();
 
@@ -163,9 +163,9 @@ public class PlayingCards24Controller {
 		try {
 			time = System.nanoTime() - time;
 			Formatter f = new Formatter("log.txt");
-			f.format("%s", "Verifying solution");
+			f.format("%s", "Verifying solution\n");
 			f.format("%s %s", Long.toString(TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS)),
-					" seconds used to solve");
+					"seconds used to solve\n");
 			time = System.nanoTime();
 
 			int[] n = new int[13];
@@ -187,24 +187,24 @@ public class PlayingCards24Controller {
 						isCorrect = true;
 						System.out.println(engine.eval(expressionInput));
 						JOptionPane.showMessageDialog(null, "Success! The total is 24.", "Verify Math Equation", 1);
-						f.format("%s", "Solution is correct");
+						f.format("%s", "Solution is correct\n");
 					} else {
 						isCorrect = false;
 						System.out.println(engine.eval(expressionInput));
 						JOptionPane.showMessageDialog(null, "Oops! The total is not 24, Please try again.",
 								"Verify Math Equation", 1);
-						f.format("%s", "Solution is incorrect");
+						f.format("%s", "Solution is incorrect\n");
 					}
 				}
 				else {
 					isCorrect = false;
 					JOptionPane.showMessageDialog(null, "Incorrect input. Please try again.", "Verify Math Equation", 1);
-					f.format("%s", "Incorrect input");
+					f.format("%s", "Incorrect input\n");
 				}
 			} else {
 				isCorrect = false;
 				JOptionPane.showMessageDialog(null, "Incorrect input. Please try again.", "Verify Math Equation", 1);
-				f.format("%s", "Incorrect input");
+				f.format("%s", "Incorrect input\n");
 			}
 			f.close();
 		} catch (Exception e) {
