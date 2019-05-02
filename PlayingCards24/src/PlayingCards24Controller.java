@@ -77,31 +77,39 @@ public class PlayingCards24Controller {
 		try {
 			time = System.nanoTime() - time;
 			Formatter f = new Formatter("log.txt");
+			f.format("%s", "Finding solution");
 			f.format("%s %s", Long.toString(TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS)),
 					" seconds used to obtain solution");
-			f.close();
 			time = System.nanoTime();
+			
+			int card1 = cards[0].getValue();
+			int card2 = cards[1].getValue();
+			int card3 = cards[2].getValue();
+			int card4 = cards[3].getValue();
+			
+			String c1 = Integer.toString(card1);
+			String c2 = Integer.toString(card2);
+			String c3 = Integer.toString(card3);
+			String c4 = Integer.toString(card4);
+			
+			if (isCorrect == true) {
+				// Returns solution if the verify function confirms you are correct
+				solutionTextField.setText(expressionTextField.getText());
+				f.format("%s", "Solution found");
+			}
+			else if (isCorrect == false) {
+				// Returns "No Solution" if verify function confirms there is an incorrect input
+				// or the total does not equal to 24
+				solutionTextField.setText("No Solution for: [" + c1 + ", " + c2 + ", " + c3 + ", " + c4 + "]");
+				f.format("%s", "No solution found");
+			}
+			
+			
+			
+			f.close();
 		} catch (Exception e) {
 			System.out.println("Error");
 		}
-		int card1 = cards[0].getValue();
-		int card2 = cards[1].getValue();
-		int card3 = cards[2].getValue();
-		int card4 = cards[3].getValue();
-
-		String c1 = Integer.toString(card1);
-		String c2 = Integer.toString(card2);
-		String c3 = Integer.toString(card3);
-		String c4 = Integer.toString(card4);
-
-		if (isCorrect == true)
-			// Returns solution if the verify function confirms you are correct
-			solutionTextField.setText(expressionTextField.getText());
-		else if (isCorrect == false)
-			// Returns "No Solution" if verify function confirms there is an incorrect input
-			// or the total does not equal to 24
-			solutionTextField.setText("No Solution for: [" + c1 + ", " + c2 + ", " + c3 + ", " + c4 + "]");
-
 	}
 
 	@FXML
@@ -109,6 +117,7 @@ public class PlayingCards24Controller {
 		try {
 			time = System.nanoTime() - time;
 			Formatter f = new Formatter("log.txt");
+			f.format("%s", "Refreshing cards");
 			f.format("%s %s", Long.toString(TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS)), " seconds used");
 			f.close();
 			time = System.nanoTime();
@@ -154,9 +163,9 @@ public class PlayingCards24Controller {
 		try {
 			time = System.nanoTime() - time;
 			Formatter f = new Formatter("log.txt");
+			f.format("%s", "Verifying solution");
 			f.format("%s %s", Long.toString(TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS)),
 					" seconds used to solve");
-			f.close();
 			time = System.nanoTime();
 
 			int[] n = new int[13];
@@ -173,22 +182,31 @@ public class PlayingCards24Controller {
 						&& count(expressionInput, Integer.toString(cards[1].getValue())) == n[cards[1].getValue() - 1]
 						&& count(expressionInput, Integer.toString(cards[2].getValue())) == n[cards[2].getValue() - 1]
 						&& count(expressionInput, Integer.toString(cards[3].getValue())) == n[cards[3].getValue() - 1]
-						&& check(expressionInput) == 4) {
+						&& count(expressionInput, "") == 4) {
 					if (engine.eval(expressionInput).equals(24)) {
 						isCorrect = true;
 						System.out.println(engine.eval(expressionInput));
 						JOptionPane.showMessageDialog(null, "Success! The total is 24.", "Verify Math Equation", 1);
+						f.format("%s", "Solution is correct");
 					} else {
 						isCorrect = false;
 						System.out.println(engine.eval(expressionInput));
 						JOptionPane.showMessageDialog(null, "Oops! The total is not 24, Please try again.",
 								"Verify Math Equation", 1);
+						f.format("%s", "Solution is incorrect");
 					}
+				}
+				else {
+					isCorrect = false;
+					JOptionPane.showMessageDialog(null, "Incorrect input. Please try again.", "Verify Math Equation", 1);
+					f.format("%s", "Incorrect input");
 				}
 			} else {
 				isCorrect = false;
 				JOptionPane.showMessageDialog(null, "Incorrect input. Please try again.", "Verify Math Equation", 1);
+				f.format("%s", "Incorrect input");
 			}
+			f.close();
 		} catch (Exception e) {
 			System.out.println("Error");
 		}
@@ -199,21 +217,15 @@ public class PlayingCards24Controller {
 		Pattern p = Pattern.compile("\\d+");
 		Matcher m = p.matcher(str);
 		while (m.find()) {
-			if (m.group().equals(n)) {
+			if(n.equals("")) {
 				count++;
+			}
+			else {
+				if (m.group().equals(n)) {
+					count++;
+				}
 			}
 		}
 		return count;
-	}
-
-	public int check(String str) {
-		int count = 0;
-		Pattern p = Pattern.compile("\\d+");
-		Matcher m = p.matcher(str);
-		while (m.find()) {
-			count++;
-		}
-		return count;
-
 	}
 }
