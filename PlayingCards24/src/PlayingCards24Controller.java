@@ -17,16 +17,20 @@ import javafx.scene.image.ImageView;
 
 public class PlayingCards24Controller {
 
+	// JavaScript Engine added to handle math equations
 	ScriptEngineManager mgr = new ScriptEngineManager();
 	ScriptEngine engine = mgr.getEngineByName("JavaScript");
 
+	// Arrays created to hold the value and suits of the card
 	static private String[] cardNumber = { "ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen",
 			"king" }, cardType = { "clubs", "diamonds", "hearts", "spades" };
 
 	Card[] cards = new Card[] { new Card("3", "hearts", 3), new Card("king", "clubs", 13), new Card("4", "diamonds", 4),
 			new Card("2", "clubs", 2) };
-	
+
 	long time = System.nanoTime();
+
+	boolean isCorrect;
 
 	@FXML
 	private ImageView cardInWindow1;
@@ -61,21 +65,43 @@ public class PlayingCards24Controller {
 	}
 
 	@FXML
+	// Closes Application
 	void closeWindow(ActionEvent event) {
 		System.exit(0);
 	}
 
 	@FXML
+	// Function generates a solution based on the value of the four randomly
+	// generated cards
 	void findSolution(ActionEvent event) {
 		try {
 			time = System.nanoTime() - time;
 			Formatter f = new Formatter("log.txt");
-			f.format("%s %s", Long.toString(TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS)), " seconds used to obtain solution");
+			f.format("%s %s", Long.toString(TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS)),
+					" seconds used to obtain solution");
 			f.close();
 			time = System.nanoTime();
 		} catch (Exception e) {
 			System.out.println("Error");
 		}
+		int card1 = cards[0].getValue();
+		int card2 = cards[1].getValue();
+		int card3 = cards[2].getValue();
+		int card4 = cards[3].getValue();
+
+		String c1 = Integer.toString(card1);
+		String c2 = Integer.toString(card2);
+		String c3 = Integer.toString(card3);
+		String c4 = Integer.toString(card4);
+
+		if (isCorrect == true)
+			// Returns solution if the verify function confirms you are correct
+			solutionTextField.setText(expressionTextField.getText());
+		else if (isCorrect == false)
+			// Returns "No Solution" if verify function confirms there is an incorrect input
+			// or the total does not equal to 24
+			solutionTextField.setText("No Solution for: [" + c1 + ", " + c2 + ", " + c3 + ", " + c4 + "]");
+
 	}
 
 	@FXML
@@ -86,12 +112,13 @@ public class PlayingCards24Controller {
 			f.format("%s %s", Long.toString(TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS)), " seconds used");
 			f.close();
 			time = System.nanoTime();
-			
+
 			solutionTextField.setText("");
 			expressionTextField.setText("");
-			
+
+			// Random Generator created
 			Random r = new Random();
-			
+
 			for (int i = 0; i < 4; i++) {
 				int n1 = r.nextInt(13), n2 = r.nextInt(4);
 				String number = cardNumber[n1], type = cardType[n2];
@@ -110,7 +137,7 @@ public class PlayingCards24Controller {
 				} while (abundant == true);
 				cards[i] = new Card(number, type, n1 + 1);
 			}
-			
+			// Images are set in the GUI
 			cardInWindow1.setImage(cards[0].getImage());
 			cardInWindow2.setImage(cards[1].getImage());
 			cardInWindow3.setImage(cards[2].getImage());
@@ -121,14 +148,17 @@ public class PlayingCards24Controller {
 	}
 
 	@FXML
+	// Function used to confirm whether the math equation entered equals to 24 based
+	// on the value of the cards
 	void verify(ActionEvent event) throws ScriptException {
 		try {
 			time = System.nanoTime() - time;
 			Formatter f = new Formatter("log.txt");
-			f.format("%s %s", Long.toString(TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS)), " seconds used to solve");
+			f.format("%s %s", Long.toString(TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS)),
+					" seconds used to solve");
 			f.close();
 			time = System.nanoTime();
-			
+
 			int[] n = new int[13];
 			for (int i = 0; i < 4; i++) {
 				n[cards[i].getValue() - 1]++;
@@ -145,15 +175,18 @@ public class PlayingCards24Controller {
 						&& count(expressionInput, Integer.toString(cards[3].getValue())) == n[cards[3].getValue() - 1]
 						&& check(expressionInput) == 4) {
 					if (engine.eval(expressionInput).equals(24)) {
+						isCorrect = true;
 						System.out.println(engine.eval(expressionInput));
 						JOptionPane.showMessageDialog(null, "Success! The total is 24.", "Verify Math Equation", 1);
 					} else {
+						isCorrect = false;
 						System.out.println(engine.eval(expressionInput));
 						JOptionPane.showMessageDialog(null, "Oops! The total is not 24, Please try again.",
 								"Verify Math Equation", 1);
 					}
 				}
 			} else {
+				isCorrect = false;
 				JOptionPane.showMessageDialog(null, "Incorrect input. Please try again.", "Verify Math Equation", 1);
 			}
 		} catch (Exception e) {
