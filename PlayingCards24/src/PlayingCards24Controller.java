@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -23,7 +24,7 @@ public class PlayingCards24Controller {
 
 	// Arrays created to hold the value and suits of the card
 	static private String[] cardNumber = { "ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen",
-			"king" }, cardType = { "clubs", "diamonds", "hearts", "spades" };
+			"king" }, cardType = { "clubs", "diamonds", "hearts", "spades" }, operators = {"+", "-", "*", "/"};
 
 	Card[] cards = new Card[] { new Card("3", "hearts", 3), new Card("king", "clubs", 13), new Card("4", "diamonds", 4),
 			new Card("2", "clubs", 2) };
@@ -82,34 +83,125 @@ public class PlayingCards24Controller {
 					"seconds used to obtain solution\n");
 			time = System.nanoTime();
 			
-			int card1 = cards[0].getValue();
-			int card2 = cards[1].getValue();
-			int card3 = cards[2].getValue();
-			int card4 = cards[3].getValue();
+			int[] n = {cards[0].getValue(), cards[1].getValue(), cards[2].getValue(), cards[3].getValue()};
+			boolean[] deleted = new boolean[n.length];
+			ArrayList<String> list = getInstructions(-1, -1, -1, n, deleted);
 			
-			String c1 = Integer.toString(card1);
-			String c2 = Integer.toString(card2);
-			String c3 = Integer.toString(card3);
-			String c4 = Integer.toString(card4);
-			
-			if (isCorrect == true) {
-				// Returns solution if the verify function confirms you are correct
-				solutionTextField.setText(expressionTextField.getText());
-				f.format("%s", "Solution found\n");
+			if(!list.isEmpty()) {
+				String str = getEquation(n, list);
+				if(engine.eval(str).equals(24)) {
+					solutionTextField.setText(str);
+					f.format("%s", "Solution found\n");
+				}
+				else {
+					solutionTextField.setText("No Solution for: [" + Integer.toString(n[0]) + ", " + Integer.toString(n[1]) + ", " + Integer.toString(n[2]) + ", " + Integer.toString(n[3]) + "]");
+					f.format("%s", "No solution found\n");
+				}
 			}
-			else if (isCorrect == false) {
-				// Returns "No Solution" if verify function confirms there is an incorrect input
-				// or the total does not equal to 24
-				solutionTextField.setText("No Solution for: [" + c1 + ", " + c2 + ", " + c3 + ", " + c4 + "]");
+			else {
+				solutionTextField.setText("No Solution for: [" + Integer.toString(n[0]) + ", " + Integer.toString(n[1]) + ", " + Integer.toString(n[2]) + ", " + Integer.toString(n[3]) + "]");
 				f.format("%s", "No solution found\n");
 			}
-			
-			
-			
 			f.close();
 		} catch (Exception e) {
 			System.out.println("Error");
 		}
+	}
+	
+	public ArrayList<String> getInstructions(int i1, int i2, int i3, int[] n, boolean[] deleted) {
+		int remain = 0, tmp = 0;
+		for (int i = 0; i < deleted.length; i++) {
+			if (!deleted[i]) {
+				tmp = n[i];
+				remain++;
+			}
+		}
+		if (remain == 1) {
+			if (Math.abs(tmp - 24) < 1E-10) {
+				ArrayList<String> list = new ArrayList<>();
+				list.add("parenthesis," + 1);
+				list.add("number," + i1);
+				list.add("operator," + i2);
+				list.add("number," + i3);
+				list.add("parenthesis," + 2);
+				return list;
+			}
+			else {
+				return new ArrayList<>();
+			}
+		}
+		for (int f = 0; f < 4; f++) {
+			for (int i = 0; i < 4; i++) {
+				if (!deleted[i]) {
+					for (int j = 0; j < 4; j++) {
+						if (!deleted[j]) {
+							if (i != j) {
+								int[] tmpn = n.clone();
+								boolean[] tmpDeleted = deleted.clone();
+								tmpDeleted[j] = true;
+								try {
+									tmpn[i] = evaluate(n[i], n[j], operators[f]);
+								} catch (Exception e) {
+									break;
+								}
+								ArrayList<String> list = getInstructions(i, f, j, tmpn, tmpDeleted), tmpList = new ArrayList<>();
+								if(list.size() > 0) {
+									for(int o = 0; o < list.size(); o++) {
+										if(list.get(o).substring(0, list.get(o).indexOf(",")).equals("number") && list.get(o).substring(list.get(o).indexOf(",") + 1, list.get(o).length()).equals(Integer.toString(i1))) {
+											tmpList.add("parenthesis," + 1);
+											tmpList.add("number," + i1);
+											tmpList.add("operator," + i2);
+											tmpList.add("number," + i3);
+											tmpList.add("parenthesis," + 2);
+										}
+										else {
+											tmpList.add(list.get(o));
+										}
+									}
+									return tmpList;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return new ArrayList<>();
+	}
+	
+	public String getEquation(int[] n, ArrayList<String> list) {
+		String str = "";
+		for(int i = 0; i < list.size(); i++) {
+			if(list.get(i).substring(0, list.get(i).indexOf(",")).equals("number")) {
+				str += n[Integer.parseInt(list.get(i).substring(list.get(i).indexOf(",") + 1, list.get(i).length()))];
+			}
+			else if(list.get(i).substring(0, list.get(i).indexOf(",")).equals("operator")) {
+				str += operators[Integer.parseInt(list.get(i).substring(list.get(i).indexOf(",") + 1, list.get(i).length()))];
+			}
+			else if(list.get(i).substring(0, list.get(i).indexOf(",")).equals("parenthesis")) {
+				if(list.get(i).substring(list.get(i).indexOf(",") + 1, list.get(i).length()).equals("1")) {
+					str += "(";
+				}
+				else {
+					str += ")";
+				}
+			}
+		}
+		return str;
+	}
+	
+	public int evaluate(int x, int y, String s) {
+		switch(s) {
+		case "+":
+			return x + y;
+		case "-":
+			return x - y;
+		case "*":
+			return x * y;
+		case "/":
+			return x/y;
+		}
+		return 0;
 	}
 
 	@FXML
