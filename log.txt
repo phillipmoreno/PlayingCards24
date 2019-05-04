@@ -1,1 +1,3 @@
-Finding solution1  seconds used to obtain solutionSolution found
+Verifying solution
+2 seconds used to solve
+Solution is correct
